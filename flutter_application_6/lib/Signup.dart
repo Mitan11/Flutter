@@ -40,9 +40,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                 // Email
                 const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Email"),
-                ),
+                    alignment: Alignment.centerLeft, child: Text("Email")),
                 TextFormField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -54,9 +52,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                 // Password
                 const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Password"),
-                ),
+                    alignment: Alignment.centerLeft, child: Text("Password")),
                 TextFormField(
                   obscureText: true,
                   decoration: const InputDecoration(
@@ -69,106 +65,74 @@ class _SignupScreenState extends State<SignupScreen> {
 
                 // Remark
                 const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Remark"),
-                ),
+                    alignment: Alignment.centerLeft, child: Text("Remark")),
                 TextFormField(
                   maxLines: 5,
                   maxLength: 200,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration:
+                      const InputDecoration(border: OutlineInputBorder()),
                 ),
 
                 const SizedBox(height: 20),
 
                 // Gender
-                RadioMenuButton(
-                  value: "Female",
-                  groupValue: gender,
-                  onChanged: (value) {
-                    setState(() {
-                      gender = value;
-                    });
-                  },
-                  child: Text("Female"),
-                ),
-
-                RadioMenuButton(
+                RadioListTile(
+                  title: const Text("Male"),
                   value: "Male",
                   groupValue: gender,
                   onChanged: (value) {
-                    setState(() {
-                      gender = value;
-                    });
+                    setState(() => gender = value);
                   },
-                  child: Text("Male"),
+                ),
+                RadioListTile(
+                  title: const Text("Female"),
+                  value: "Female",
+                  groupValue: gender,
+                  onChanged: (value) {
+                    setState(() => gender = value);
+                  },
                 ),
 
                 const SizedBox(height: 20),
 
                 // Category
-                RadioGroup(
+                RadioListTile(
+                  title: const Text("General"),
+                  value: "General",
                   groupValue: category,
                   onChanged: (value) {
-                    setState(() {
-                      category = value;
-                    });
+                    setState(() => category = value);
                   },
-                  child: Column(
-                    children: [
-                      RadioListTile(value: "General", title: Text("General")),
-                      RadioListTile(
-                        value: "OBC",
-                        title: Text("OBC"),
-                        subtitle: Text("subtitle1"),
-                      ),
-                    ],
-                  ),
+                ),
+                RadioListTile(
+                  title: const Text("OBC"),
+                  subtitle: const Text("subtitle1"),
+                  value: "OBC",
+                  groupValue: category,
+                  onChanged: (value) {
+                    setState(() => category = value);
+                  },
                 ),
 
                 const SizedBox(height: 20),
 
                 // Hobbies
-                Row(
-                  children: [
-                    Checkbox(
-                      value: hobbyDance,
-                      onChanged: (value) {
-                        setState(() {
-                          hobbyDance = value!;
-                        });
-                      },
-                    ),
-                    const Text("Dance"),
-
-                    CheckboxMenuButton(
-                      value: hobbySinging,
-                      onChanged: (value) {
-                        setState(() {
-                          hobbySinging = value!;
-                        });
-                      },
-                      child: const Text("Singing"),
-                    ),
-                  ],
+                CheckboxListTile(
+                  title: const Text("Dance"),
+                  value: hobbyDance,
+                  onChanged: (value) {
+                    setState(() => hobbyDance = value!);
+                  },
+                ),
+                CheckboxListTile(
+                  title: const Text("Singing"),
+                  value: hobbySinging,
+                  onChanged: (value) {
+                    setState(() => hobbySinging = value!);
+                  },
                 ),
 
                 const SizedBox(height: 20),
-
-                DropdownButtonFormField(
-                hint:Text("Choose City"),
-                decoration: InputDecoration(border: OutlineInputBorder()),
-                items: [
-                DropdownMenuItem( value:"Pune",child: Text("Pune")),
-                DropdownMenuItem(value:"Ahmedabad",child: Text("Ahmedabad")),
-                DropdownMenuItem(value:"Jaipur",child: Text("Jaipur")),
-                DropdownMenuItem(value:"Mumbai",child: Text("Mumbai")),
-                DropdownMenuItem(value:"Surat",child: Text("Surat")),
-              ], 
-              onChanged:(value){setState(() {
-                selectedCity=value.toString();
-              });}),
 
                 // City Dropdown
                 DropdownButtonFormField<String>(
@@ -178,7 +142,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     border: OutlineInputBorder(),
                   ),
                   items: cities.map((city) {
-                    return DropdownMenuItem(
+                    return DropdownMenuItem<String>(
                       value: city,
                       child: Text(city),
                     );

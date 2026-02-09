@@ -64,7 +64,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     flex: 1,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (formKey.currentState!.validate()) {}
+                        if (formKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Login Successful')),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -81,10 +85,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text("Create an Account??"),
                   SizedBox(width: 20),
 
-                  TextButton(onPressed: (){
-                    Navigator.push(context,
-                    MaterialPageRoute(builder: (_)=>SignupScreen()));
-                  }, child: Text("SignUp")),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => SignupScreen()),
+                      );
+                    },
+                    child: Text("SignUp"),
+                  ),
 
                   GestureDetector(
                     onTap: () {
