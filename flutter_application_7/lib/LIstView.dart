@@ -47,21 +47,23 @@ class _LIstViewState extends State<LIstView> {
           // ),
 
           // List View Spaerator
-          ListView.separated(
-            itemCount: name.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(name[index]),
-                leading: Icon(Icons.check),
-                trailing: CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  child: Text(name[index].substring(0, 1).toUpperCase()),
-                ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return Divider();
-            },
+          Card(
+            child: ListView.separated(
+              itemCount: name.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(name[index]),
+                  leading: Icon(Icons.check),
+                  trailing: CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    child: Text(name[index].substring(0, 1).toUpperCase()),
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider();
+              },
+            ),
           ),
         ],
       ),
