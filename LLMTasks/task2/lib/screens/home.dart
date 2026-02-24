@@ -12,8 +12,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<String> students = [];
 
+  // Add student to the list
   void addStudent(String name) {
-   
+    setState(() {
+      students.add(name);
+    });
+  }
+
+  // Delete student from the list
+  void deleteStudent(int index) {
+    setState(() {
+      students.removeAt(index);
+    });
   }
 
   @override
@@ -23,36 +33,50 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: students.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(students[index]),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            StudentDetailsScreen(students[index]),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
+            child: students.isEmpty
+                ? Center(child: Text("No students added."))
+                : ListView.builder(
+                    itemCount: students.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          child: Text(
+                            students[index][0].toUpperCase(),
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        title: Text(students[index]),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StudentDetailsScreen(
+                                  name: students[index]),
+                            ),
+                          );
+                        },
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => deleteStudent(index),
+                        ),
+                      );
+                    },
+                  ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddStudentScreen(addStudent),
-                ),
-              );
-            },
-            child: Text("Add Student"),
-          )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddStudentScreen(addStudent: addStudent),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+        tooltip: "Add Student",
       ),
     );
   }

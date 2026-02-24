@@ -2,22 +2,26 @@ import 'package:flutter/material.dart';
 
 class AddExpenseScreen extends StatefulWidget {
   final Function addExpense;
-  const AddExpenseScreen({super.key});
+  const AddExpenseScreen({super.key, required this.addExpense});
 
   @override
   State<AddExpenseScreen> createState() => _AddExpenseScreenState();
 }
 
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
-  final controller = TextEditingController();
+  final amountController = TextEditingController();
+  final categoryController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   void saveExpense() {
     if (_formKey.currentState!.validate()) {
-      double value = double.parse(controller.text);
+      double value = double.parse(amountController.text);
+      String category = categoryController.text;
 
-      widget.addExpense!(value);
+      // Pass both amount and category to the addExpense function
+      widget.addExpense(value, category);
 
+      // Navigate back to HomeScreen after saving the expense
       Navigator.pop(context);
     }
   }
@@ -33,13 +37,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           child: Column(
             children: [
               TextFormField(
-                controller: controller,
+                controller: amountController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  label: Text("Enter Expense")
-                ),
+                decoration: InputDecoration(label: Text("Enter Amount")),
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return "Enter amount";
                   }
                   if (double.tryParse(value) == null) {
@@ -48,15 +50,22 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   if (double.parse(value) <= 0) {
                     return "Invalid amount";
                   }
+                  return null;
                 },
               ),
-
               SizedBox(height: 20),
-
-              ElevatedButton(
-                onPressed: saveExpense,
-                child: Text("Save"),
-              )
+              TextFormField(
+                controller: categoryController,
+                decoration: InputDecoration(label: Text("Enter Category")),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Enter category";
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(onPressed: saveExpense, child: Text("Save")),
             ],
           ),
         ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AddStudentScreen extends StatefulWidget {
-   final Function addStudent;
-  const AddStudentScreen({super.key});
+  final Function addStudent;
+  const AddStudentScreen({super.key, required this.addStudent});
 
   @override
   State<AddStudentScreen> createState() => _AddStudentScreenState();
@@ -14,8 +14,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   void save() {
     if (controller.text.isNotEmpty) {
       widget.addStudent(controller.text);
+      Navigator.pop(context);
     }
-    Navigator.pop(context);
   }
 
   @override
@@ -26,12 +26,16 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(controller: controller , decoration: InputDecoration(
-              label:Text("Name"), hintText: "Enter Student Name",
-              border: OutlineInputBorder()
-            ),),
+            TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                label: Text("Name"),
+                hintText: "Enter Student Name",
+                border: OutlineInputBorder(),
+              ),
+            ),
             SizedBox(height: 20),
-            ElevatedButton(onPressed: save, child: Text("Save"))
+            ElevatedButton(onPressed: save, child: Text("Save")),
           ],
         ),
       ),

@@ -1,5 +1,5 @@
 ## Debug the code 
-- Convert StudentDetailsScreen to astateful widget.
+- Convert StudentDetailsScreen to a stateful widget.
 - Fix the studentName bug 
 - Fix the addStudent Function bug
 
