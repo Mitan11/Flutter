@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key});
+  const AddTaskScreen({
+    super.key,
+    this.initialTask,
+    this.screenTitle = "Add Task",
+    this.buttonTitle = "Save Task",
+  });
+
+  final String? initialTask;
+  final String screenTitle;
+  final String buttonTitle;
 
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
@@ -11,20 +20,33 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   final controller = TextEditingController();
 
-  void saveTask() {
+  @override
+  void initState() {
+    super.initState();
+    controller.text = widget.initialTask ?? '';
+  }
 
-    if (controller.text.isEmpty) {
-      Navigator.pop(context); 
+  void saveTask() {
+    final task = controller.text.trim();
+
+    if (task.isEmpty) {
+      return;
     }
 
-    Navigator.pop(context, controller); 
+    Navigator.pop(context, task);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Task"),
+        title: Text(widget.screenTitle),
       ),
 
       body: Padding(
@@ -43,7 +65,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
             ElevatedButton(
               onPressed: saveTask,
-              child: const Text("Save Task"),
+              child: Text(widget.buttonTitle),
             )
           ],
         ),
