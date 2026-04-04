@@ -2,32 +2,53 @@ import 'package:flutter/material.dart';
 import 'package:task5/screens/add_student_screen.dart';
 import 'package:task5/screens/summary_screen.dart';
 
-
-class Attendance extends StatelessWidget {
+class Attendance extends StatefulWidget {
   const Attendance({super.key});
 
-  final List<String> students = [];              // ❌ BUG 1
-  final Map<String, bool> attendance = {};       // ❌ BUG 1
+  @override
+  State<Attendance> createState() => _AttendanceState();
+}
 
-  int presentCount = 0;                          // ❌ BUG 1
+class _AttendanceState extends State<Attendance> {
+  List<String> students = [];
+  Map<String, bool> attendance = {};
+
+  int get presentCount =>
+      attendance.values.where((value) => value == true).length;
 
   void addStudent(String name) {
-    students.add(name);
-    attendance[name] = false;
+    if (name.trim().isEmpty) return;
 
-    presentCount =
-        attendance.values.where((value) => value = true).length; // ❌ BUG 2
+    setState(() {
+      students.add(name);
+      attendance[name] = false;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("$name added successfully")),
+    );
   }
 
   void toggleAttendance(String name) {
-    attendance[name] != attendance[name]; // ❌ BUG 3
+    setState(() {
+      attendance[name] = !(attendance[name] ?? false);
+    });
+  }
+
+  void deleteStudent(String name) {
+    setState(() {
+      students.remove(name);
+      attendance.remove(name);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    int absentCount = students.length - presentCount;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Attendance Tracker"),
+        title: Text("Students (${students.length})"),
         actions: [
           IconButton(
             icon: const Icon(Icons.bar_chart),
@@ -36,7 +57,7 @@ class Attendance extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => SummaryScreen(
-                    presentCount: presentCount,   // ❌ BUG 4
+                    presentCount: presentCount,
                     totalStudents: students.length,
                   ),
                 ),
@@ -48,24 +69,33 @@ class Attendance extends StatelessWidget {
 
       body: Column(
         children: [
-
-          Text("Present: $presentCount"), // ❌ BUG 5
+          Text("Present: $presentCount"),
+          Text("Absent: $absentCount"),
 
           Expanded(
             child: ListView.builder(
               itemCount: students.length,
               itemBuilder: (context, index) {
-
                 String name = students[index];
 
-                return ListTile(
-                  title: Text(name),
+                return Card(
+                  margin: const EdgeInsets.all(8),
+                  child: ListTile(
+                    title: Text(name),
 
-                  trailing: Checkbox(
-                    value: attendance[name],
-                    onChanged: (value) {
-                      toggleAttendance(name); // ❌ BUG 6
-                    },
+                    leading: Checkbox(
+                      value: attendance[name] ?? false,
+                      onChanged: (_) {
+                        toggleAttendance(name);
+                      },
+                    ),
+
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        deleteStudent(name);
+                      },
+                    ),
                   ),
                 );
               },
@@ -74,7 +104,6 @@ class Attendance extends StatelessWidget {
 
           ElevatedButton(
             onPressed: () async {
-
               final newStudent = await Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -82,7 +111,9 @@ class Attendance extends StatelessWidget {
                 ),
               );
 
-              addStudent(newStudent); // ❌ BUG 7
+              if (newStudent != null && newStudent is String) {
+                addStudent(newStudent);
+              }
             },
             child: const Text("Add Student"),
           )
@@ -91,4 +122,3 @@ class Attendance extends StatelessWidget {
     );
   }
 }
-

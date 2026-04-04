@@ -12,7 +12,6 @@ class SummaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     int absentCount = totalStudents - presentCount;
 
     return Scaffold(
@@ -22,11 +21,9 @@ class SummaryScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
             Text("Total Students: $totalStudents"),
             Text("Present Students: $presentCount"),
             Text("Absent Students: $absentCount"),
-
           ],
         ),
       ),

@@ -5,7 +5,6 @@ class AddStudentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final controller = TextEditingController();
 
     return Scaffold(
@@ -15,7 +14,6 @@ class AddStudentScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-
             TextField(
               controller: controller,
               decoration: const InputDecoration(
@@ -27,7 +25,14 @@ class AddStudentScreen extends StatelessWidget {
 
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context, controller); // ❌ BUG 8
+                if (controller.text.trim().isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Name cannot be empty")),
+                  );
+                  return;
+                }
+
+                Navigator.pop(context, controller.text.trim()); // ✅ FIXED
               },
               child: const Text("Save"),
             )
