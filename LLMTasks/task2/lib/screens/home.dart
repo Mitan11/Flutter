@@ -75,8 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         },
-        child: Icon(Icons.add),
         tooltip: "Add Student",
+        child: Icon(Icons.add),
       ),
     );
   }

@@ -9,7 +9,7 @@ class TextFieldWidget extends StatefulWidget {
 
 class _TextFieldState extends State<TextFieldWidget> {
 
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

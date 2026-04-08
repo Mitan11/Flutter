@@ -9,7 +9,6 @@ class WidgetsButton extends StatelessWidget {
       children: [
         ElevatedButton(
           onPressed: () {},
-          child: Text("Press Me"),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
@@ -25,6 +24,7 @@ class WidgetsButton extends StatelessWidget {
             minimumSize: Size(150, 50),
             // fixedSize: Size(200, 50 ),
           ),
+          child: Text("Press Me"),
         ),
 
         ElevatedButton.icon(

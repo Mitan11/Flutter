@@ -172,7 +172,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                 // City Dropdown
                 DropdownButtonFormField<String>(
-                  value: selectedCity,
+                  initialValue: selectedCity,
                   hint: const Text("Choose City"),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),

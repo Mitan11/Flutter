@@ -51,11 +51,11 @@ void main() {
   print("Welcome ${name ?? "Guest"}");
 
   // ?. safely accesses length
-  print("Length of name: ${name?.length}");
+  print("Length of name: ${name.length}");
 
   // 4️⃣ ! (null-assertion operator)
   // We are sure name is NOT null here
-  print("Length using ! : ${name!.length}");
+  print("Length using ! : ${name.length}");
 
   // type checking using is & is!
 

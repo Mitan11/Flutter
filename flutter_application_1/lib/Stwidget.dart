@@ -16,6 +16,6 @@ class _StwidgetState extends State<Stwidget> {
       setState(() {
         name = "Welcome to Myapp";
       });
-    }, child: Text("${name ?? 'Click Me'}"));
+    }, child: Text(name ?? 'Click Me'));
   }
 }
