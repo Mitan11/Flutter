@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:task7/screens/result_screen.dart';
-
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
 
@@ -9,7 +8,7 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
- List<Map<String, dynamic>> questions = [
+  List<Map<String, dynamic>> questions = [
     {
       "question": "Capital of France?",
       "options": ["Berlin", "Paris", "Rome"],
@@ -21,63 +20,99 @@ class _QuizScreenState extends State<QuizScreen> {
       "options": ["6", "8", "10"],
       "answer": "8",
       "selected": ""
-    }
+    },
   ];
 
   int score = 0;
 
+  // Calculate score after checking all answers
   void calculateScore() {
+    score = 0; // Reset score before recalculating
     for (var q in questions) {
       if (q["selected"] == q["answer"]) {
-        score = score++; // 😈 BUG
+        score++; // Increment if answer is correct
       }
     }
   }
 
-  void goToResult() {
-    calculateScore();
+  // Validate that all questions have been answered
+  bool validateAnswers() {
+    for (var q in questions) {
+      if (q["selected"] == "") {
+        return false; // If any question is unanswered, return false
+      }
+    }
+    return true; // All questions answered
+  }
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ResultScreen(), // 😈 BUG (no score passed)
-      ),
-    );
+  // Navigate to ResultScreen if validation passes
+  void goToResult() {
+    if (validateAnswers()) {
+      calculateScore(); // Only calculate score if answers are valid
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(
+            finalScore: score,
+            totalQuestions: questions.length,
+            questions: questions,
+          ),
+        ),
+      );
+    } else {
+      // Show error message if not all questions are answered
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please answer all questions!")),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Mini Quiz")),
-      body: ListView.builder(
-        itemCount: questions.length,
-        itemBuilder: (context, index) {
-          return Card(
-            child: Column(
-              children: [
-                Text(
-                  questions[index]["question"],
-                  style: TextStyle(fontSize: 18),
-                ),
-                ...questions[index]["options"].map<Widget>((option) {
-                  return RadioListTile(
-                    title: Text(option),
-                    value: option,
-                    groupValue: questions[index]["selected"],
-                    onChanged: (value) {
-                      questions[index]["selected"] = value;
-                      // 😈 BUG (no setState)
-                    },
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: questions.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 5,
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            questions[index]["question"],
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        ...questions[index]["options"].map<Widget>((option) {
+                          return RadioListTile(
+                            title: Text(option),
+                            value: option,
+                            groupValue: questions[index]["selected"],
+                            onChanged: (value) {
+                              setState(() {
+                                questions[index]["selected"] = value; // Update selected answer
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ],
+                    ),
                   );
-                }).toList(),
-              ],
+                },
+              ),
             ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: goToResult,
-        child: Icon(Icons.check),
+            ElevatedButton(
+              onPressed: goToResult, // Trigger result calculation and navigation
+              child: Text("Submit Quiz"),
+            ),
+          ],
+        ),
       ),
     );
   }
